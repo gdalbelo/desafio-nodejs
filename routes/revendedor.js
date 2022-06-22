@@ -3,15 +3,17 @@ require('dotenv/config');
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const bcrypt = require('bcrypt');
 
 const Revendedor = require('../models/Revendedor');
 
 router.post('/', async (req, res) => {
+    const hashedPassword = await bcrypt.hash(req.body.senha, 10);
     const revendedor = new Revendedor({
         CPF: req.body.CPF,
         nomeCompleto: req.body.nomeCompleto,
         email: req.body.email,
-        senha: req.body.senha
+        senha: hashedPassword
     });
 
     try {
@@ -27,7 +29,7 @@ router.post('/login', async (req, res) => {
 
     try {
         revendedor = await Revendedor.findOne({ email: req.body.email });
-        if(revendedor.senha == req.body.password) {
+        if(await bcrypt.compare(req.body.password, revendedor.senha)) {
             return res.json("Revendedor logado no sistema Cashback.");
         } else {
             return res.json("Senha ou email incorretos!");
