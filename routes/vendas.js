@@ -4,6 +4,8 @@ const router = express.Router();
 const Sale = require('../models/Vendas');
 const Revendedor = require('../models/Revendedor');
 
+const calcCashback = require('../utils/cashback');
+
 router.post('/', async (req, res) => {
     let { CPF, valor } = req.body;
     let cashback = {porcentagem: 0, valor: 0};
@@ -28,16 +30,7 @@ router.post('/', async (req, res) => {
         contador = parseInt(ultimoContador) + 1;
     }
 
-    if(parseFloat(valor) <= 1000.00) {
-        cashback.porcentagem = '10%';
-        cashback.valor = valor * 0.10;
-    } else if(parseFloat(valor) > 1000.00 && parseFloat(valor) <= 1500.00) {
-        cashback.porcentagem = '15%';
-        cashback.valor = valor * 0.15;
-    } else if(parseFloat(valor) > 1500.00) {
-        cashback.porcentagem = '20%';
-        cashback.valor = valor * 0.20;
-    }
+    calcCashback(cashback, valor);
 
     const venda = new Sale({
         codigo: `${ano}${CPF}${contador}`,
@@ -69,16 +62,7 @@ router.put('/:codigo', async (req, res) => {
     let { CPF, valor } = req.body;
     let cashback = {porcentagem: 0, valor: 0};
 
-    if(parseFloat(valor) <= 1000.00) {
-        cashback.porcentagem = '10%';
-        cashback.valor = valor * 0.10;
-    } else if(parseFloat(valor) > 1000.00 && parseFloat(valor) <= 1500.00) {
-        cashback.porcentagem = '15%';
-        cashback.valor = valor * 0.15;
-    } else if(parseFloat(valor) > 1500.00) {
-        cashback.porcentagem = '20%';
-        cashback.valor = valor * 0.20;
-    }
+    calcCashback(cashback, valor);
 
     const venda = new Sale({
         codigo,
