@@ -1,5 +1,5 @@
 # desafio-nodejs
-# Backend do desafio técnico proposto.
+# Backend do desafio técnico.
 # Para rodar
 # npm install
 # npm start
