@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "type": "module",
+  "type":"commonjs",
   "scripts": {
     "test": "jest",
     "build": "sucrase ./routes -d ./dist --transforms imports",
-    "dev": "nodemon src/app.js",
-    "start": "node dist/app.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
